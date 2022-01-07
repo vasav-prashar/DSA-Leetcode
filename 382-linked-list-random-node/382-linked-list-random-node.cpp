@@ -9,20 +9,22 @@
  * };
  */
 class Solution {
+    ListNode*t;
 public:
-    vector<int> ans;
     Solution(ListNode* head) {
-        while(head!=NULL){
-            ans.push_back(head->val);
-            head=head->next;
-        }
+        t=head;
     }
     
     int getRandom() {
-        int n=ans.size();
-        int pos=rand()%n;
-        return ans[pos];
-        
+        ListNode*temp=t;
+        int len=0,res;
+        while(temp!=NULL){
+            len++;
+            if((rand()%len)==0)
+                res=temp->val;
+            temp=temp->next;
+        }
+        return res;
     }
 };
 
