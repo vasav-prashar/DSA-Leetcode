@@ -1,0 +1,21 @@
+class Solution {
+public:
+    bool isRobotBounded(string instructions) {
+        int x=0,y=0,i=0;
+        vector<vector<int>> d={{0,1},{1,0},{0,-1},{-1,0}};
+        for(char a=0;a<instructions.size();a++){
+            if(instructions[a]=='G'){
+                x=x+d[i][0];
+                y=y+d[i][1];
+            }
+            else if(instructions[a]=='L'){
+                i=(i+3)%4;
+                
+            }
+            else{
+                i=(i+1)%4;
+            }
+        }
+        return x==0&&y==0||i>0;
+    }
+};
