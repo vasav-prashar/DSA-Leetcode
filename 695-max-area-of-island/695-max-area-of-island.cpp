@@ -6,7 +6,7 @@ public:
         int col=grid[0].size();
         for(int i=0;i<row;i++){
             for(int j=0;j<col;j++){
-                if(grid[i][j]==1)
+                // if(grid[i][j]==1)
                 maxarea=max(maxarea,area(i,j,grid));
             }
         }
