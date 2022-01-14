@@ -4,7 +4,7 @@ public:
         vector<vector<int>> ans;
         if(n<k)
             return ans;
-        vector<int> temp(0,k);
+        vector<int> temp;
         dfs(ans,temp,0,0,n,k);
         return ans;
     }
