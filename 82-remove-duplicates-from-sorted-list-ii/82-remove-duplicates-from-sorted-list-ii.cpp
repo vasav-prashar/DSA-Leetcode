@@ -22,11 +22,11 @@ public:
         }
         else{
             while(temp&&temp->val==currVal){
-                ListNode* dummy=temp;
+                
                 temp=temp->next;
-                delete dummy;
+                
             }
-            delete head;
+            
             return deleteDuplicates(temp);
         }
         
