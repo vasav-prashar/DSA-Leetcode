@@ -1,1 +1,1 @@
-1. using additional space and sort it then compare the value to find starting and ending value where the violation begins
+​
