@@ -18,7 +18,7 @@ public:
                 else
                     break;
             }
-            if(curr!=0)
+            if(curr>0)
                 st.insert(curr);
            
         }
