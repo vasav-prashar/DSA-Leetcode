@@ -1,14 +1,17 @@
 class Solution {
 public:
-    int climbStairs(int n) {
-       vector<int> ans(n,0);
-        if(n==1)
+    int helper(int index,vector<int> &dp){
+        if(index==0)
             return 1;
-        ans[0]=1;
-        ans[1]=2;
-        for(int i=2;i<n;i++){
-            ans[i]=ans[i-1]+ans[i-2];
-        }
-        return ans[n-1];
+        if(index==1)
+            return 1;
+        if(dp[index]!=-1)
+            return dp[index];
+       return dp[index]=helper(index-1,dp)+helper(index-2,dp);
     }
-}; 
+    int climbStairs(int n) {
+       vector<int> dp(n+1,-1);
+       return helper(n,dp);
+        
+    }
+};
