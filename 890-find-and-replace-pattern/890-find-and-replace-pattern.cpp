@@ -1,7 +1,9 @@
 class Solution {
 public:
+    // we take two map and if one char of string in words and one char of string pattern are mapped with each other already then it means it is following the permutationn pattern string
+//     and simillarly for map pattern string characters with word string
     bool match(string &a,string &b){
-        map<char,char> m1,m2;
+        unordered_map<char,char> m1,m2;
         for(int i=0;i<a.size();i++){
             if(m1.find(a[i])==m1.end()){
                 m1[a[i]]=b[i];
