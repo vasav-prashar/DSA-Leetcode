@@ -26,7 +26,8 @@ public:
     // }
     
     int uniquePaths(int m, int n) {
-        vector<vector<int>> dp(m,vector<int>(n,1));
+        // tabulation bottom up
+        vector<vector<int>> dp(m,vector<int>(n,1));// initilaize with 1 
         dp[0][0]=1;
        
         for(int i=1;i<m;i++){
