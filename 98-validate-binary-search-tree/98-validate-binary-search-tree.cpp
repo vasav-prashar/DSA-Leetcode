@@ -11,14 +11,17 @@
  */
 class Solution {
 public:
-    bool isValidBST(TreeNode* root) {
-        return bst(root,LONG_MIN,LONG_MAX);
-    }
-    bool bst(TreeNode* root,long min,long max){
-        if(root==NULL)
+    // recursive and we check the range for the node value
+    bool validate(TreeNode* root,long low,long high){
+        if(!root)
             return true;
-        if(root->val<=min||root->val>=max)
+        if(root->val<=low||root->val>=high)
             return false;
-        return bst(root->left,min,root->val) && bst(root->right,root->val,max);
+        return validate(root->left,low,root->val)&&validate(root->right,root->val,high);
+        
+    }
+    bool isValidBST(TreeNode* root) {
+        return validate(root,LONG_MIN,LONG_MAX);
+        
     }
 };
