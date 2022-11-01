@@ -1,39 +1,76 @@
 class Solution {
 public:
-    int cherryPickup(vector<vector<int>>& grid) {
-        const int ROW_NUM = grid.size(), COL_NUM = grid[0].size();
-        const int D[] = {-1, 0, 1};
-        int dp[ROW_NUM][COL_NUM][COL_NUM];
-        
-        for (int k = 0; k < ROW_NUM; k ++) 
-            for (int i = 0; i < COL_NUM; i ++)  
-                for (int j = 0; j < COL_NUM; j ++) 
-                    dp[k][i][j] = 0;
-        
-        for (int i = 0; i < COL_NUM; i ++) // ulfill dp of the last row
-            for (int j = i; j < COL_NUM; j ++) {
-                if (i == j)
-                    dp[ROW_NUM - 1][i][j] = grid[ROW_NUM - 1][i];
-                else
-                    dp[ROW_NUM - 1][i][j] = grid[ROW_NUM - 1][i] + grid[ROW_NUM - 1][j];
-            }
-        
-        for (int k = ROW_NUM - 2; k >= 0; k --) { // from the second last row to the first row
-            vector<int> row = grid[k];
-            for (int i = 0; i < COL_NUM; i ++)
-                // for every (i, j, k), dp[k][i][j] == dp[k][j][i]
-                // so we only need to find the answer for j >= i
-                // for (int j = 0; j < COL_NUM; j ++) { // we will get DP in the picture
-                for (int j = i; j < COL_NUM; j ++) // we will get DP' in the picture
-                    for (int di = 0; di < 3; di ++)
-                        for (int dj = 0; dj < 3; dj ++) {
-                            if (i + D[di] < 0 || i + D[di] >= COL_NUM || j + D[dj] < 0 || j + D[dj] >= COL_NUM) continue;
-                            if (i == j) 
-                                dp[k][i][j] = max(dp[k][i][j], dp[k + 1][i + D[di]][j + D[dj]] + row[i]);
-                            else
-                                dp[k][i][j] = max(dp[k][i][j], dp[k + 1][i + D[di]][j + D[dj]] + row[i] + row[j]);
-                        }
+    
+    //recursion
+    int recur(int i,int j1,int j2,int r,int c,vector<vector<int>> &grid){
+        if(j1<0||j1>=c||j2<0||j2>=c){//base case out of bounds
+            return -1e8;
         }
-        return dp[0][0][COL_NUM - 1];
+        if(i==r-1)// destination base case
+        {
+           if(j1==j2){
+               return grid[i][j1];
+           } 
+            else
+                return grid[i][j1]+grid[i][j2];
+            
+        }
+        //explore all paths
+        int maxi=INT_MIN;
+        for(int d1=-1;d1<=+1;d1++){
+            for(int d2=-1;d2<=+1;d2++){
+                int val=0;
+                if(j1==j2){
+                    val=grid[i][j1];
+                }
+                else
+                    val=grid[i][j1]+grid[i][j2];
+                val+=recur(i+1,j1+d1,j2+d2,r,c,grid);
+                maxi=max(maxi,val);
+                
+            }
+        }
+        return maxi;
+    }
+    // memoization
+    int memo(int i,int j1,int j2,int r,int c,vector<vector<int>> &grid,vector<vector<vector<int>>>&dp){
+         if(j1<0||j1>=c||j2<0||j2>=c){//base case out of bounds
+            return -1e8;
+        }
+        if(i==r-1)// destination base case
+        {
+           if(j1==j2){
+               return grid[i][j1];
+           } 
+            else
+                return grid[i][j1]+grid[i][j2];
+            
+        }
+        
+        if(dp[i][j1][j2]!=-1)
+            return dp[i][j1][j2];
+        //explore all paths
+        int maxi=INT_MIN;
+        for(int d1=-1;d1<=+1;d1++){
+            for(int d2=-1;d2<=+1;d2++){
+                int val=0;
+                if(j1==j2){
+                    val=grid[i][j1];
+                }
+                else
+                    val=grid[i][j1]+grid[i][j2];
+                val+=memo(i+1,j1+d1,j2+d2,r,c,grid,dp);
+                maxi=max(maxi,val);
+                
+            }
+        }
+        return dp[i][j1][j2]=maxi;
+    }
+    int cherryPickup(vector<vector<int>>& grid) {
+        int row=grid.size();
+        int col=grid[0].size();
+         vector<vector<vector<int>>> dp(row,vector<vector<int>> (col,vector<int>(col,-1)));
+        return memo(0,0,grid[0].size()-1,grid.size(),grid[0].size(),grid,dp);
+        // return recur(0,0,grid[0].size()-1,grid.size(),grid[0].size(),grid);
     }
 };
